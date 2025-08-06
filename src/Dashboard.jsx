@@ -38,7 +38,7 @@ const PrinterIcon = () => (
 // Initial state for the resume data
 const initialResumeData = {
   personalInfo: {
-    name: 'Jane Doe',
+    name: 'manav',
     title: 'Senior Frontend Developer',
     email: 'jane.doe@example.com',
     phone: '+1 (555) 123-4567',
@@ -103,7 +103,6 @@ const InputField = ({ label, value, onChange, placeholder, type = 'text', classN
     {type === 'textarea' ? (
       <textarea
         className="form-textarea"
-        value={value}
         onChange={onChange}
         placeholder={placeholder}
         name={name}
@@ -112,7 +111,6 @@ const InputField = ({ label, value, onChange, placeholder, type = 'text', classN
       <input
         className="form-input"
         type={type}
-        value={value}
         onChange={onChange}
         placeholder={placeholder}
         name={name}
@@ -122,7 +120,7 @@ const InputField = ({ label, value, onChange, placeholder, type = 'text', classN
 );
 
 // Component for the resume input form
-const ResumeForm = ({ resumeData, setResumeData }) => {
+const ResumeForm = ({ setResumeData }) => {
   const handlePersonalInfoChange = (e) => {
     const { name, value } = e.target;
     setResumeData(prevData => ({
@@ -140,7 +138,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
   const handleExperienceChange = (index, e) => {
     const { name, value } = e.target;
-    const newExperience = [...resumeData.experience];
+    const newExperience = [...initialResumeData.experience];
     if (name === 'description') {
       newExperience[index][name] = value.split('\n');
     } else {
@@ -160,13 +158,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   };
 
   const removeExperience = (index) => {
-    const newExperience = resumeData.experience.filter((_, i) => i !== index);
+    const newExperience = initialResumeData.experience.filter((_, i) => i !== index);
     setResumeData(prevData => ({ ...prevData, experience: newExperience }));
   };
 
   const handleEducationChange = (index, e) => {
     const { name, value } = e.target;
-    const newEducation = [...resumeData.education];
+    const newEducation = [...initialResumeData.education];
     newEducation[index][name] = value;
     setResumeData(prevData => ({ ...prevData, education: newEducation }));
   };
@@ -179,7 +177,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   };
 
   const removeEducation = (index) => {
-    const newEducation = resumeData.education.filter((_, i) => i !== index);
+    const newEducation = initialResumeData.education.filter((_, i) => i !== index);
     setResumeData(prevData => ({ ...prevData, education: newEducation }));
   };
 
@@ -195,24 +193,24 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       {/* Personal Info */}
       <div className="form-section">
         <h2 className="form-section-title"><UserIcon />Personal Information</h2>
-        <InputField label="Full Name" name="name" value={resumeData.personalInfo.name} onChange={handlePersonalInfoChange} />
-        <InputField label="Title" name="title" value={resumeData.personalInfo.title} onChange={handlePersonalInfoChange} />
-        <InputField label="Email" name="email" value={resumeData.personalInfo.email} onChange={handlePersonalInfoChange} />
-        <InputField label="Phone" name="phone" value={resumeData.personalInfo.phone} onChange={handlePersonalInfoChange} />
-        <InputField label="LinkedIn" name="linkedin" value={resumeData.personalInfo.linkedin} onChange={handlePersonalInfoChange} />
-        <InputField label="City, State" name="city" value={resumeData.personalInfo.city} onChange={handlePersonalInfoChange} />
+        <InputField label="Full Name" name="name" placeholder="Jane Doe" onChange={handlePersonalInfoChange} />
+        <InputField label="Title" name="title" placeholder="Senior Frontend Developer" onChange={handlePersonalInfoChange} />
+        <InputField label="Email" name="email" placeholder="jane.doe@example.com" onChange={handlePersonalInfoChange} />
+        <InputField label="Phone" name="phone" placeholder="+1 (555) 123-4567" onChange={handlePersonalInfoChange} />
+        <InputField label="LinkedIn" name="linkedin" placeholder="linkedin.com/in/janedoe" onChange={handlePersonalInfoChange} />
+        <InputField label="City, State" name="city" placeholder="San Francisco, CA" onChange={handlePersonalInfoChange} />
       </div>
 
       {/* Professional Summary */}
       <div className="form-section">
         <h2 className="form-section-title"><BookMarkedIcon />Professional Summary</h2>
-        <InputField label="Summary" name="summary" type="textarea" value={resumeData.summary} onChange={handleSummaryChange} />
+        <InputField label="Summary" name="summary" type="textarea" placeholder="Results-driven Senior Frontend Developer with over 10 years of experience..." onChange={handleSummaryChange} />
       </div>
 
       {/* Work Experience */}
       <div className="form-section">
         <h2 className="form-section-title"><BriefcaseIcon />Work Experience</h2>
-        {resumeData.experience.map((exp, index) => (
+        {initialResumeData.experience.map((exp, index) => (
           <div key={index} className="form-sub-section">
             <h3 className="form-sub-title">Experience #{index + 1}</h3>
             <button
@@ -221,13 +219,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
             >
               <XCircleIcon />
             </button>
-            <InputField label="Company" name="company" value={exp.company} onChange={(e) => handleExperienceChange(index, e)} />
-            <InputField label="Job Title" name="title" value={exp.title} onChange={(e) => handleExperienceChange(index, e)} />
+            <InputField label="Company" name="company" placeholder="Tech Innovators Inc." onChange={(e) => handleExperienceChange(index, e)} />
+            <InputField label="Job Title" name="title" placeholder="Senior Frontend Developer" onChange={(e) => handleExperienceChange(index, e)} />
             <div className="date-fields">
-              <InputField label="Start Date" name="startDate" value={exp.startDate} onChange={(e) => handleExperienceChange(index, e)} />
-              <InputField label="End Date" name="endDate" value={exp.endDate} onChange={(e) => handleExperienceChange(index, e)} />
+              <InputField label="Start Date" name="startDate" placeholder="Jan 2020" onChange={(e) => handleExperienceChange(index, e)} />
+              <InputField label="End Date" name="endDate" placeholder="Present" onChange={(e) => handleExperienceChange(index, e)} />
             </div>
-            <InputField label="Description (one point per line)" name="description" type="textarea" value={exp.description.join('\n')} onChange={(e) => handleExperienceChange(index, e)} />
+            <InputField label="Description (one point per line)" name="description" type="textarea" placeholder="Led a team of 5 developers..." onChange={(e) => handleExperienceChange(index, e)} />
           </div>
         ))}
         <button
@@ -241,7 +239,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       {/* Education */}
       <div className="form-section">
         <h2 className="form-section-title"><GraduationCapIcon />Education</h2>
-        {resumeData.education.map((edu, index) => (
+        {initialResumeData.education.map((edu, index) => (
           <div key={index} className="form-sub-section">
             <h3 className="form-sub-title">Education #{index + 1}</h3>
             <button
@@ -250,9 +248,9 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
             >
               <XCircleIcon />
             </button>
-            <InputField label="School" name="school" value={edu.school} onChange={(e) => handleEducationChange(index, e)} />
-            <InputField label="Degree" name="degree" value={edu.degree} onChange={(e) => handleEducationChange(index, e)} />
-            <InputField label="Year" name="year" value={edu.year} onChange={(e) => handleEducationChange(index, e)} />
+            <InputField label="School" name="school" placeholder="Stanford University" onChange={(e) => handleEducationChange(index, e)} />
+            <InputField label="Degree" name="degree" placeholder="M.S. in Computer Science" onChange={(e) => handleEducationChange(index, e)} />
+            <InputField label="Year" name="year" placeholder="2015" onChange={(e) => handleEducationChange(index, e)} />
           </div>
         ))}
         <button
@@ -270,9 +268,8 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
           label="Skills (comma separated)"
           name="skills"
           type="textarea"
-          value={resumeData.skills.join(', ')}
+          placeholder="JavaScript, React, Tailwind CSS, etc."
           onChange={handleSkillsChange}
-          placeholder="e.g., JavaScript, React, Tailwind CSS"
         />
       </div>
     </div>
@@ -390,27 +387,25 @@ const App = () => {
           }
           
           .main-container {
+            width: 100%;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            transition-property: background-color, color;
-            transition-duration: 300ms;
+            justify-content: center;
+            padding: 2rem 1rem;
+            box-sizing: border-box; /* Ensures padding is included in the element's total width */
           }
           
           .main-wrapper {
-            width: 100%;
             max-width: 80rem;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 2rem;
             border-radius: 1.5rem;
             padding: 2rem;
             background-color: var(--bg-color-dark);
             position: relative;
-            overflow: hidden;
             z-index: 10;
+            overflow-x: hidden; /* This is the key fix for the horizontal scrollbar */
           }
 
           .main-wrapper::before {
@@ -425,7 +420,8 @@ const App = () => {
           
           @media (min-width: 1024px) {
             .main-wrapper {
-              flex-direction: row;
+              grid-template-columns: 1fr 1fr;
+              overflow-x: visible; /* Re-enable on large screens if desired, but hidden is generally fine */
             }
           }
           
@@ -443,26 +439,8 @@ const App = () => {
             margin-bottom: 2rem;
           }
           
-          .form-section-wrapper {
+          .form-section-wrapper, .preview-section-wrapper {
             width: 100%;
-            flex-shrink: 0;
-          }
-          
-          @media (min-width: 1024px) {
-            .form-section-wrapper {
-              width: 50%;
-            }
-          }
-          
-          .preview-section-wrapper {
-            width: 100%;
-            flex-shrink: 0;
-          }
-          
-          @media (min-width: 1024px) {
-            .preview-section-wrapper {
-              width: 50%;
-            }
           }
           
           .form-container {
@@ -532,6 +510,11 @@ const App = () => {
             background-color: var(--bg-color-mid);
           }
           
+          .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--text-color-light);
+            opacity: 0.5; /* Lighter placeholder text for contrast */
+          }
+
           .form-input:focus, .form-textarea:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
@@ -617,6 +600,10 @@ const App = () => {
           .sticky-preview {
             position: sticky;
             top: 2rem;
+            @media (max-width: 1023px) {
+              position: static;
+              top: auto;
+            }
           }
           
           .resume-display-container {
@@ -700,6 +687,8 @@ const App = () => {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.5rem;
           }
           
           .experience-company, .education-school {
@@ -743,29 +732,50 @@ const App = () => {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
           }
+
+          /* New section styles for resume tips */
+          .engagement-tips {
+            padding: 2rem;
+            background-color: var(--bg-color-mid);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            margin-top: 2rem;
+          }
+          .engagement-tips-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--purple-color);
+            margin-bottom: 1rem;
+          }
+          .tip-list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+          }
+          .tip-list li {
+            margin-bottom: 1rem;
+            color: var(--text-color-secondary);
+            line-height: 1.6;
+          }
+          .tip-list li strong {
+            color: var(--text-color-primary);
+          }
           
           /* --- PRINT-SPECIFIC STYLES --- */
           @media print {
-            /* Hide the entire input form, print buttons, and instructions */
-            .form-section-wrapper, .buttons-container, .print-tip {
+            .form-section-wrapper, .buttons-container, .print-tip, .engagement-tips {
                 display: none !important;
             }
-
-            /* Show only the resume display section */
             .preview-section-wrapper {
                 width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
-            
-            /* Remove the sticky positioning for print */
             .sticky-preview {
                 position: static !important;
                 top: auto !important;
             }
-
-            /* Reset container styles for printing on a clean page */
-            .main-container, .main-wrapper, .resume-display-container {
+            .main-container, .main-wrapper {
                 background-color: white !important;
                 color: black !important;
                 padding: 0 !important;
@@ -777,36 +787,27 @@ const App = () => {
                 max-width: 100% !important;
                 border-radius: 0 !important;
             }
-
-            /* Remove the gradient border for print */
+            .resume-display-container {
+              padding: 1in !important;
+              background-color: white !important;
+              box-shadow: none !important;
+              border: none !important;
+            }
             .main-wrapper::before {
               display: none !important;
             }
-
-            /* Ensure all text is black for printing */
             body, p, span, h1, h2, h3, h4, li, a {
               color: black !important;
             }
-            
-            /* Give some color to the resume title for a better look */
             .resume-name {
               color: #2563eb !important;
             }
             .resume-section-title {
               color: #2563eb !important;
             }
-
-            /* Ensure background colors are white */
             .resume-section-title, .resume-header {
                 border-bottom-color: #ccc !important;
             }
-
-            /* Apply standard print margins to the resume content */
-            #resume-display {
-                padding: 1in !important;
-            }
-
-            /* Use @page to control print margins and headers/footers */
             @page {
               size: letter;
               margin: 1in;
@@ -815,7 +816,6 @@ const App = () => {
         `}
       </style>
       <div className="main-container">
-        {/* Main container with futuristic gradient border */}
         <div className="main-wrapper">
           <div className="form-section-wrapper">
             <h1 className="app-title">Resume Builder</h1>
@@ -823,8 +823,28 @@ const App = () => {
               Fill out the form below to create your professional resume. The preview will update in real-time.
             </p>
             <div id="input-form">
-              <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
+              <ResumeForm setResumeData={setResumeData} />
             </div>
+            
+            {/* New section for resume tips */}
+            <div className="engagement-tips">
+              <h2 className="engagement-tips-title">💡 Tips for an Engaging Resume</h2>
+              <ul className="tip-list">
+                <li>
+                  <strong>Focus on Achievements, not Just Duties:</strong> Instead of listing your job responsibilities, show the impact of your work. Use quantifiable results to prove your value.
+                </li>
+                <li>
+                  <strong>Start with a Strong Summary:</strong> Your professional summary is your "elevator pitch." It should be a concise paragraph that immediately tells a recruiter who you are, what you've accomplished, and what value you bring.
+                </li>
+                <li>
+                  <strong>Use Action Verbs:</strong> Begin each bullet point in your experience section with a powerful action verb like **Led**, **Developed**, **Optimized**, or **Launched**. This makes your contributions sound more dynamic and intentional.
+                </li>
+                <li>
+                  <strong>Tailor Your Resume:</strong> Customize your resume for each job you apply to. Highlight the skills and experiences that are most relevant to the specific role and company, using keywords from the job description.
+                </li>
+              </ul>
+            </div>
+            
           </div>
 
           <div className="preview-section-wrapper">
@@ -837,7 +857,6 @@ const App = () => {
                 Print to PDF
               </button>
             </div>
-            {/* Simple tip that will be hidden on print */}
             <p className="print-tip text-sm text-gray-400 mt-2 text-right">
               In the print dialog, you can disable "Headers and Footers" for a cleaner look.
             </p>
