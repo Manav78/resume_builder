@@ -1,7 +1,7 @@
 
 
 import './App.css'
-import App2 from './dashboard'
+import App2 from './Dashboard';
 
 function App() {
   return <App2/>
